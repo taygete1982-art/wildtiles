@@ -2,6 +2,7 @@ shader_type canvas_item;
 
 uniform float hue_shift : hint_range(0.0, 1.0) = 0.0;
 uniform float silhouette : hint_range(0.0, 1.0) = 0.0;
+uniform float saturation : hint_range(0.0, 1.5) = 1.0;
 uniform vec4 silhouette_color : source_color = vec4(0.13, 0.13, 0.16, 1.0);
 
 vec3 rgb2hsv(vec3 c) {
@@ -26,6 +27,7 @@ void fragment() {
     } else {
         vec3 hsv = rgb2hsv(tex.rgb);
         hsv.x = fract(hsv.x + hue_shift);
+        hsv.y = clamp(hsv.y * saturation, 0.0, 1.0);
         COLOR = vec4(hsv2rgb(hsv), tex.a);
     }
 }

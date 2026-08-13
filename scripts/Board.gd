@@ -56,9 +56,14 @@ func generate_positions(count: int, layers: int) -> Array:
     return positions
 
 func get_tile_types(count: int) -> Array:
-    var all_types = ["chair", "sofa", "table", "bed", "lamp", "tv",
-                     "shelf", "plant", "clock", "fridge", "wardrobe", "sink"]
-    return all_types.slice(0, count)
+    var items = ["chair", "sofa", "table", "bed", "lamp", "tv",
+                 "shelf", "plant", "clock", "fridge", "wardrobe", "sink"]
+    var combos = []
+    for it in items:
+        for v in range(4):
+            combos.append(it + ":" + str(v))
+    combos.shuffle()
+    return combos.slice(0, count)
 
 func clear_board():
     for tile in tiles:
