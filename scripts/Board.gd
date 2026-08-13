@@ -26,10 +26,12 @@ func generate_level(level: int):
 func generate_positions(count: int) -> Array:
     var positions = []
     var layers = 3
-    var per_layer = count / layers
+    var per_layer = int(floorf(float(count) / float(layers)))
     for layer in range(layers):
         for i in range(per_layer):
-            positions.append({"x": (i % 4) + layer, "y": (i / 4) + layer, "layer": layer})
+            var x = (i % 4) + layer
+            var y = int(floorf(float(i) / 4.0)) + layer
+            positions.append({"x": x, "y": y, "layer": layer})
     return positions
 
 func get_tile_types(count: int) -> Array:
