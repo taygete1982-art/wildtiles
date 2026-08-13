@@ -9,19 +9,32 @@ func _ready():
 func generate_level(level: int):
     clear_board()
     var config = LevelManager.get_level_config(level)
-    var types = get_tile_types(config.types)
+    var type_list = build_tile_list(config.tile_count, config.types)
     var positions = generate_positions(config.tile_count)
     
     for i in range(config.tile_count):
         var pos = positions[i]
         var tile = tile_scene.instantiate()
-        tile.setup(types[i % types.size()])
+        tile.setup(type_list[i])
         tile.position = Vector2(pos.x * 80 + 40, pos.y * 80 + 40)
         tile.z_index = pos.layer
         add_child(tile)
         tiles.append(tile)
     
     update_blocked_tiles()
+
+# Собираем список плиток строго тройками, чтобы уровень был проходим
+func build_tile_list(count: int, num_types: int) -> Array:
+    var list = []
+    var types = get_tile_types(num_types)
+    var groups = int(floorf(float(count) / 3.0))
+    for g in range(groups):
+        var t = types[g % types.size()]
+        list.append(t)
+        list.append(t)
+        list.append(t)
+    list.shuffle()
+    return list
 
 func generate_positions(count: int) -> Array:
     var positions = []
