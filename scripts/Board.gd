@@ -39,7 +39,9 @@ func generate_positions(count: int, layers: int) -> Array:
     var positions = []
     var per_layer = int(floorf(float(count) / float(layers)))
     var extra = count - per_layer * layers
-    var cols = 8
+    var cols = clampi(ceili(float(per_layer) / 2.0), 5, 12)
+    var spacing = 72 if cols >= 10 else 80
+    var half = spacing * 0.5
     
     for layer in range(layers):
         var n = per_layer + (1 if layer < extra else 0)
@@ -47,8 +49,8 @@ func generate_positions(count: int, layers: int) -> Array:
             var col = i % cols
             var row = int(floorf(float(i) / float(cols)))
             positions.append({
-                "x": col * 80 + layer * 40,
-                "y": row * 80 + layer * 40,
+                "x": col * spacing + layer * half,
+                "y": row * spacing + layer * half,
                 "layer": layer
             })
     return positions
