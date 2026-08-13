@@ -16,3 +16,10 @@ position = Vector2(40, 40)
 
 [node name="Tray" parent="." instance=ExtResource("3")]
 position = Vector2(40, 500)
+
+[node name="ScoreLabel" type="Label" parent="."]
+offset_left = 40.0
+offset_top = 10.0
+offset_right = 200.0
+offset_bottom = 30.0
+text = "Счёт: 0"
