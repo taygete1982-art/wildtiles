@@ -1,49 +1,29 @@
 extends Node2D
 
 var tile_type: String = ""
-var is_selected: bool = false
 var is_clicked: bool = false
 var is_blocked: bool = false
 
-const TILE_COLORS = {
-    "giraffe": Color(1.0, 0.8, 0.4, 1),
-    "lion": Color(0.9, 0.6, 0.2, 1),
-    "zebra": Color(0.9, 0.9, 0.9, 1),
-    "meerkat": Color(0.8, 0.5, 0.3, 1),
-    "acacia": Color(0.4, 0.7, 0.3, 1),
-    "sloth": Color(0.6, 0.5, 0.4, 1),
-    "tiger": Color(1.0, 0.5, 0.1, 1),
-    "chameleon": Color(0.3, 0.8, 0.5, 1),
-    "monstera": Color(0.2, 0.7, 0.4, 1),
-    "camel": Color(0.9, 0.8, 0.5, 1),
-    "fennec": Color(0.9, 0.7, 0.6, 1),
-    "cactus": Color(0.5, 0.8, 0.4, 1)
-}
-
 func setup(type: String):
     tile_type = type
-    print("Setting up tile: ", type)
-    
-    # Устанавливаем цвет
-    var color = TILE_COLORS.get(type, Color(0.8, 0.8, 0.8, 1))
-    get_node("Background").color = color
-    
-    # Устанавливаем текст
-    get_node("Label").text = type.substr(0, 2).to_upper()
-
-func _input_event(viewport, event, shape_idx):
-    if event is InputEventMouseButton and event.pressed:
-        print("Tile clicked: ", tile_type)
-        on_tile_clicked()
+    var path = "res://assets/tiles/" + type + ".png"
+    if ResourceLoader.exists(path):
+        var tex = load(path)
+        var sprite = get_node("Sprite")
+        sprite.texture = tex
+        var s = 48.0 / max(tex.get_width(), tex.get_height())
+        sprite.scale = Vector2(s, s)
+    else:
+        print("Нет картинки: ", path)
 
 func _on_area_2d_input_event(viewport, event, shape_idx):
-    _input_event(viewport, event, shape_idx)
+    if event is InputEventMouseButton and event.pressed:
+        on_tile_clicked()
 
 func on_tile_clicked():
     if is_blocked:
         print("Плитка заблокирована!")
         return
-    
     if not is_clicked:
         is_clicked = true
         animate_click()
