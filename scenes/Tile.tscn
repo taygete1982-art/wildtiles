@@ -19,6 +19,7 @@ color = Color(0.96, 0.94, 0.86, 1)
 [node name="Sprite" type="Sprite2D" parent="."]
 
 [node name="Area2D" type="Area2D" parent="."]
+input_pickable = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("RectangleShape2D_001")
