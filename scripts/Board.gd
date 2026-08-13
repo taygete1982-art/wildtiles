@@ -39,8 +39,8 @@ func generate_positions(count: int, layers: int) -> Array:
     var positions = []
     var per_layer = int(floorf(float(count) / float(layers)))
     var extra = count - per_layer * layers
-    var cols = clampi(ceili(float(per_layer) / 2.0), 5, 12)
-    var spacing = 72 if cols >= 10 else 80
+    var cols = clampi(ceili(float(per_layer) / 2.0), 5, 8)
+    var spacing = 68
     var half = spacing * 0.5
     
     for layer in range(layers):
@@ -72,7 +72,7 @@ func is_tile_available(tile) -> bool:
         if other_tile.z_index > tile.z_index:
             var dx = abs(other_tile.position.x - tile.position.x)
             var dy = abs(other_tile.position.y - tile.position.y)
-            if dx < 70 and dy < 70:
+            if dx < 60 and dy < 60:
                 return false
     return true
 
