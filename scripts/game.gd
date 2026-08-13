@@ -58,6 +58,9 @@ func _on_tile_clicked(tile):
             if board.tiles.size() == 0:
                 GameManager.complete_level()
                 show_win_screen()
+        else:
+            GameManager.fail_level()
+            show_lose_screen()
     else:
         print("Плитка заблокирована!")
 
@@ -77,6 +80,8 @@ func _on_undo():
         tile.is_clicked = false
         board.tiles.append(tile)
         board.add_child(tile)
+        tile.position = tile.saved_position
+        tile.z_index = tile.saved_z
         board.update_blocked_tiles()
         update_ui()
 

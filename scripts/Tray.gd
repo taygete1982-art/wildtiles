@@ -12,6 +12,9 @@ func add_tile(tile) -> bool:
     if tiles.size() >= MAX_SLOTS:
         return false
     
+    tile.saved_position = tile.position
+    tile.saved_z = tile.z_index
+    
     history.append(tile)
     tiles.append(tile)
     tile.position = Vector2(tiles.size() * slot_width + 10, 45)
