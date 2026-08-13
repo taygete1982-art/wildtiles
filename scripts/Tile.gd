@@ -21,7 +21,13 @@ func on_tile_clicked():
     
     if not is_clicked:
         is_clicked = true
+        animate_click()
         GameManager.on_tile_clicked(self)
+
+func animate_click():
+    var tween = create_tween()
+    tween.tween_property(self, "scale", Vector2(1.2, 1.2), 0.1)
+    tween.tween_property(self, "scale", Vector2(1.0, 1.0), 0.1)
 
 func set_blocked(blocked: bool):
     is_blocked = blocked
@@ -29,3 +35,8 @@ func set_blocked(blocked: bool):
         modulate = Color(0.5, 0.5, 0.5, 1)
     else:
         modulate = Color(1, 1, 1, 1)
+
+func animate_removal():
+    var tween = create_tween()
+    tween.tween_property(self, "scale", Vector2(0, 0), 0.2)
+    tween.tween_callback(queue_free)

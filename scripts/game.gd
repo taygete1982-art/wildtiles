@@ -4,19 +4,36 @@
 @onready var tray = 
 @onready var score_label = 
 @onready var level_label = 
+@onready var win_screen = 
+@onready var lose_screen = 
+
+var win_scene = preload("res://scenes/WinScreen.tscn")
+var lose_scene = preload("res://scenes/LoseScreen.tscn")
 
 func _ready():
     GameManager.tile_clicked.connect(_on_tile_clicked)
     GameManager.level_completed.connect(_on_level_completed)
     GameManager.game_over.connect(_on_game_over)
     
+    win_screen.next_level_requested.connect(_on_next_level)
+    win_screen.restart_requested.connect(_on_restart)
+    lose_screen.restart_requested.connect(_on_restart)
+    
+    win_screen.visible = false
+    lose_screen.visible = false
+    
     start_level(GameManager.current_level)
 
 func start_level(level: int):
     board.generate_level(level)
     update_ui()
+    win_screen.visible = false
+    lose_screen.visible = false
 
 func _on_tile_clicked(tile):
+    if GameManager.is_game_over:
+        return
+    
     if board.is_tile_available(tile):
         if tray.add_tile(tile):
             board.tiles.erase(tile)
@@ -24,15 +41,32 @@ func _on_tile_clicked(tile):
             
             if board.tiles.size() == 0:
                 GameManager.complete_level()
+                show_win_screen()
+        else:
+            GameManager.fail_level()
+            show_lose_screen()
     else:
         print("Плитка недоступна!")
 
 func _on_level_completed():
-    start_level(GameManager.current_level)
-    update_ui()
+    pass
 
 func _on_game_over():
-    print("Игра окончена!")
+    pass
+
+func show_win_screen():
+    win_screen.get_node("ScoreLabel").text = "Счёт: " + str(GameManager.score)
+    win_screen.visible = true
+
+func show_lose_screen():
+    lose_screen.visible = true
+
+func _on_next_level():
+    start_level(GameManager.current_level)
+
+func _on_restart():
+    GameManager.reset_game()
+    start_level(GameManager.current_level)
 
 func update_ui():
     score_label.text = "Счёт: " + str(GameManager.score)
