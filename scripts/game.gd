@@ -99,6 +99,7 @@ func show_win_screen():
         win_screen.show_drop(roll.item, roll.variant)
     else:
         win_screen.show_no_drop()
+    CollectionManager.persist()
     album_bar.refresh()
     win_screen.visible = true
 

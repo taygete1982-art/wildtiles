@@ -12,17 +12,35 @@ script = ExtResource("1")
 [node name="Title" type="Label" parent="."]
 layout_mode = 1
 offset_left = 110.0
-offset_top = 350.0
+offset_top = 300.0
 offset_right = 610.0
-offset_bottom = 450.0
+offset_bottom = 400.0
 text = "Дикие плитки"
 
 [node name="PlayButton" type="Button" parent="."]
 layout_mode = 1
 offset_left = 260.0
-offset_top = 640.0
+offset_top = 560.0
 offset_right = 460.0
-offset_bottom = 700.0
+offset_bottom = 620.0
 text = "Играть"
 
+[node name="HomeButton" type="Button" parent="."]
+layout_mode = 1
+offset_left = 260.0
+offset_top = 660.0
+offset_right = 460.0
+offset_bottom = 720.0
+text = "Мой дом"
+
+[node name="AlbumButton" type="Button" parent="."]
+layout_mode = 1
+offset_left = 260.0
+offset_top = 760.0
+offset_right = 460.0
+offset_bottom = 820.0
+text = "Альбом"
+
 [connection signal="pressed" from="PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="HomeButton" to="." method="_on_home_button_pressed"]
+[connection signal="pressed" from="AlbumButton" to="." method="_on_album_button_pressed"]

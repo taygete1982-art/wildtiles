@@ -16,6 +16,17 @@ func get_variant(item: String) -> int:
 
 func add(item: String, variant: int):
     collection[item] = variant
+    persist()
+
+func persist():
+    SaveSystem.save_game({"collection": collection, "level": GameManager.current_level})
+
+func try_load_save():
+    var data = SaveSystem.load_game()
+    if data.has("collection"):
+        collection = data["collection"]
+    if data.has("level"):
+        GameManager.current_level = data["level"]
 
 func roll_drop():
     pity += 1
