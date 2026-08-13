@@ -1,4 +1,4 @@
-﻿extends Node
+extends Node
 
 var score: int = 0
 var current_level: int = 1
@@ -16,6 +16,7 @@ func start_game():
     print("Игра началась!")
 
 func on_tile_clicked(tile):
+    print("GameManager received tile: ", tile.tile_type)
     tile_clicked.emit(tile)
 
 func add_score(points: int):
