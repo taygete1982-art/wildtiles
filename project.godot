@@ -16,8 +16,6 @@ HintSystem="*res://scripts/HintSystem.gd"
 [display]
 window/size/width=720
 window/size/height=1280
-window/size/test_width=540
-window/size/test_height=960
 window/size/resizable=true
 window/stretch/mode="canvas_items"
 window/stretch/aspect="keep"
