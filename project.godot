@@ -8,6 +8,7 @@ run/main_scene="res://scenes/Main.tscn"
 [autoload]
 GameManager="*res://scripts/GameManager.gd"
 LevelManager="*res://scripts/LevelManager.gd"
+SaveSystem="*res://scripts/SaveSystem.gd"
 
 [rendering]
 renderer/rendering_method="gl_compatibility"
