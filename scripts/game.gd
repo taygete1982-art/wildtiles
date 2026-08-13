@@ -7,6 +7,7 @@ var score_label: Label
 var level_label: Label
 var win_screen: Node
 var lose_screen: Node
+var album_bar: Node
 
 func _ready():
     board = get_node("Board")
@@ -16,6 +17,7 @@ func _ready():
     level_label = get_node("LevelLabel")
     win_screen = get_node("WinScreen")
     lose_screen = get_node("LoseScreen")
+    album_bar = get_node("AlbumBar")
     
     GameManager.tile_clicked.connect(_on_tile_clicked)
     GameManager.level_completed.connect(_on_level_completed)
@@ -41,6 +43,7 @@ func start_level(level: int):
     tray.clear()
     HintSystem.reset_hints()
     update_ui()
+    album_bar.refresh()
     win_screen.visible = false
     lose_screen.visible = false
 
@@ -56,7 +59,7 @@ func _on_tile_clicked(tile):
                 GameManager.complete_level()
                 show_win_screen()
     else:
-        print("Плитка недоступна!")
+        print("Плитка заблокирована!")
 
 func _on_hint():
     if HintSystem.use_hint():
@@ -85,6 +88,13 @@ func _on_game_over():
 
 func show_win_screen():
     win_screen.get_node("ScoreLabel").text = "Счёт: " + str(GameManager.score)
+    var roll = CollectionManager.roll_drop()
+    if roll:
+        CollectionManager.add(roll.item, roll.variant)
+        win_screen.show_drop(roll.item, roll.variant)
+    else:
+        win_screen.show_no_drop()
+    album_bar.refresh()
     win_screen.visible = true
 
 func show_lose_screen():

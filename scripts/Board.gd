@@ -10,14 +10,14 @@ func generate_level(level: int):
     clear_board()
     var config = LevelManager.get_level_config(level)
     var type_list = build_tile_list(config.tile_count, config.types)
-    var positions = generate_positions(config.tile_count)
+    var positions = generate_positions(config.tile_count, config.layers)
     
     for i in range(config.tile_count):
         var pos = positions[i]
         var tile = tile_scene.instantiate()
         tile.setup(type_list[i])
-        tile.position = Vector2(pos.x * 80 + 40, pos.y * 80 + 40)
-        tile.z_index = pos.layer
+        tile.position = Vector2(pos.x + 60, pos.y + 60 - pos.layer * 6)
+        tile.z_index = pos.layer * 10
         add_child(tile)
         tiles.append(tile)
     
@@ -35,15 +35,23 @@ func build_tile_list(count: int, num_types: int) -> Array:
     list.shuffle()
     return list
 
-func generate_positions(count: int) -> Array:
+# Верхний слой со смещением в полплитки накрывает нижние
+func generate_positions(count: int, layers: int) -> Array:
     var positions = []
-    var layers = 3
     var per_layer = int(floorf(float(count) / float(layers)))
+    var extra = count - per_layer * layers
+    var cols = 5
+    
     for layer in range(layers):
-        for i in range(per_layer):
-            var x = (i % 4) + layer
-            var y = int(floorf(float(i) / 4.0)) + layer
-            positions.append({"x": x, "y": y, "layer": layer})
+        var n = per_layer + (1 if layer < extra else 0)
+        for i in range(n):
+            var col = i % cols
+            var row = int(floorf(float(i) / float(cols)))
+            positions.append({
+                "x": col * 80 + layer * 40,
+                "y": row * 80 + layer * 40,
+                "layer": layer
+            })
     return positions
 
 func get_tile_types(count: int) -> Array:
@@ -63,7 +71,7 @@ func is_tile_available(tile) -> bool:
         if other_tile.z_index > tile.z_index:
             var dx = abs(other_tile.position.x - tile.position.x)
             var dy = abs(other_tile.position.y - tile.position.y)
-            if dx < 60 and dy < 60:
+            if dx < 70 and dy < 70:
                 return false
     return true
 

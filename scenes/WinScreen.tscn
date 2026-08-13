@@ -19,33 +19,49 @@ color = Color(0, 0, 0, 0.7)
 [node name="Title" type="Label" parent="."]
 layout_mode = 1
 offset_left = 200.0
-offset_top = 150.0
+offset_top = 120.0
 offset_right = 440.0
-offset_bottom = 200.0
+offset_bottom = 170.0
 text = "Уровень пройден!"
 
 [node name="ScoreLabel" type="Label" parent="."]
 layout_mode = 1
 offset_left = 250.0
-offset_top = 220.0
+offset_top = 180.0
 offset_right = 390.0
-offset_bottom = 250.0
+offset_bottom = 210.0
 text = "Счёт: 0"
+
+[node name="DropIcon" type="TextureRect" parent="."]
+layout_mode = 1
+offset_left = 280.0
+offset_top = 220.0
+offset_right = 360.0
+offset_bottom = 300.0
+stretch_mode = 4
+
+[node name="DropLabel" type="Label" parent="."]
+layout_mode = 1
+offset_left = 200.0
+offset_top = 305.0
+offset_right = 440.0
+offset_bottom = 335.0
+text = ""
 
 [node name="NextLevelButton" type="Button" parent="."]
 layout_mode = 1
 offset_left = 250.0
-offset_top = 300.0
+offset_top = 350.0
 offset_right = 390.0
-offset_bottom = 340.0
+offset_bottom = 390.0
 text = "Следующий уровень"
 
 [node name="RestartButton" type="Button" parent="."]
 layout_mode = 1
 offset_left = 250.0
-offset_top = 360.0
+offset_top = 400.0
 offset_right = 390.0
-offset_bottom = 400.0
+offset_bottom = 440.0
 text = "Заново"
 
 [connection signal="pressed" from="NextLevelButton" to="." method="_on_next_level_button_pressed"]

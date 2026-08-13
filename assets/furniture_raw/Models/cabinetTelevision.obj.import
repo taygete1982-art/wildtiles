@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://clsd8m4uleh6a"
+path="res://.godot/imported/cabinetTelevision.obj-7339dd76db842d46bec60a9d290f9521.mesh"
+
+[deps]
+
+files=["res://.godot/imported/cabinetTelevision.obj-7339dd76db842d46bec60a9d290f9521.mesh"]
+
+source_file="res://assets/furniture_raw/Models/cabinetTelevision.obj"
+dest_files=["res://.godot/imported/cabinetTelevision.obj-7339dd76db842d46bec60a9d290f9521.mesh", "res://.godot/imported/cabinetTelevision.obj-7339dd76db842d46bec60a9d290f9521.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

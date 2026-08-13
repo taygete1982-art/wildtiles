@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/Background.tscn" id="2"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" path="res://scenes/ToolPanel.tscn" id="5"]
 [ext_resource type="PackedScene" path="res://scenes/WinScreen.tscn" id="6"]
 [ext_resource type="PackedScene" path="res://scenes/LoseScreen.tscn" id="7"]
+[ext_resource type="PackedScene" path="res://scenes/AlbumBar.tscn" id="8"]
 
 [node name="Game" type="Control"]
 layout_mode = 3
@@ -22,9 +23,12 @@ script = ExtResource("1")
 position = Vector2(40, 60)
 
 [node name="Tray" parent="." instance=ExtResource("4")]
-position = Vector2(40, 500)
+position = Vector2(40, 495)
 
 [node name="ToolPanel" parent="." instance=ExtResource("5")]
+
+[node name="AlbumBar" parent="." instance=ExtResource("8")]
+position = Vector2(40, 585)
 
 [node name="ScoreLabel" type="Label" parent="."]
 mouse_filter = 2
