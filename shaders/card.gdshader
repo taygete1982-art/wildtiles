@@ -1,8 +1,8 @@
 shader_type canvas_item;
 
-uniform vec4 base_color : source_color = vec4(0.96, 0.94, 0.86, 1.0);
-uniform float bevel : hint_range(0.0, 0.5) = 0.14;
-uniform float corner_radius : hint_range(0.0, 0.5) = 0.14;
+uniform vec4 base_color : source_color = vec4(0.9, 0.4, 0.4, 1.0);
+uniform float tint_amount : hint_range(0.0, 1.0) = 0.38;
+uniform float corner_radius : hint_range(0.0, 0.5) = 0.10;
 uniform float saturation : hint_range(0.0, 1.5) = 1.0;
 uniform float hue_shift : hint_range(0.0, 1.0) = 0.0;
 
@@ -31,17 +31,21 @@ void fragment() {
     float dist = rounded_sdf(p, vec2(0.5), corner_radius);
     float alpha = 1.0 - smoothstep(-0.015, 0.015, dist);
     
-    vec4 col = base_color;
-    float light = (UV.x + UV.y) * 0.5;
-    float hi = smoothstep(0.55, 0.0, light);
-    float lo = smoothstep(0.45, 1.0, light);
-    col.rgb += hi * bevel;
-    col.rgb -= lo * bevel;
-    
-    vec3 hsv = rgb2hsv(col.rgb);
+    vec3 tint = base_color.rgb;
+    vec3 hsv = rgb2hsv(tint);
     hsv.x = fract(hsv.x + hue_shift);
     hsv.y = clamp(hsv.y * saturation, 0.0, 1.0);
-    col.rgb = hsv2rgb(hsv);
+    tint = hsv2rgb(hsv);
     
-    COLOR = vec4(col.rgb, col.a * alpha);
+    vec3 face = mix(vec3(0.97, 0.96, 0.93), tint, tint_amount);
+    
+    float light = (UV.x + UV.y) * 0.5;
+    float hi = smoothstep(0.5, 0.0, light);
+    float lo = smoothstep(0.5, 1.0, light);
+    face += hi * 0.10;
+    face -= lo * 0.16;
+    
+    face -= (1.0 - smoothstep(-0.10, -0.03, dist)) * 0.12;
+    
+    COLOR = vec4(face, alpha);
 }
