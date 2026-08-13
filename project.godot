@@ -1,8 +1,9 @@
-config_version=5
+﻿config_version=5
 
 [application]
 config/name="Wild Tiles"
 config/description="Tile-match puzzle with wild animals"
+run/main_scene="res://scenes/Main.tscn"
 
 [rendering]
 renderer/rendering_method="gl_compatibility"
