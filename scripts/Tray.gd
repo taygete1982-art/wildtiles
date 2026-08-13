@@ -4,6 +4,7 @@ class_name Tray
 const MAX_SLOTS: int = 7
 var tiles: Array = []
 var slot_width: int = 70
+var history: Array = []
 
 func _ready():
     .size = Vector2(MAX_SLOTS * slot_width + 20, 90)
@@ -12,6 +13,7 @@ func add_tile(tile: Tile) -> bool:
     if tiles.size() >= MAX_SLOTS:
         return false
     
+    history.append(tile)
     tiles.append(tile)
     tile.position = Vector2(tiles.size() * slot_width + 10, 45)
     tile.get_parent().remove_child(tile)
@@ -19,6 +21,15 @@ func add_tile(tile: Tile) -> bool:
     
     check_matches()
     return true
+
+func undo_last_tile() -> Tile:
+    if history.size() > 0:
+        var tile = history.pop_back()
+        tiles.erase(tile)
+        remove_child(tile)
+        reposition_tiles()
+        return tile
+    return null
 
 func check_matches():
     var counts = {}
@@ -38,7 +49,8 @@ func remove_tiles_of_type(type: String):
     
     for tile in to_remove:
         tiles.erase(tile)
-        tile.queue_free()
+        history.erase(tile)
+        tile.animate_removal()
     
     reposition_tiles()
 
@@ -48,3 +60,9 @@ func reposition_tiles():
 
 func is_full() -> bool:
     return tiles.size() >= MAX_SLOTS
+
+func clear():
+    for tile in tiles:
+        tile.queue_free()
+    tiles.clear()
+    history.clear()

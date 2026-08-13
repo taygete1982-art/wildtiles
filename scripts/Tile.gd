@@ -29,6 +29,13 @@ func animate_click():
     tween.tween_property(self, "scale", Vector2(1.2, 1.2), 0.1)
     tween.tween_property(self, "scale", Vector2(1.0, 1.0), 0.1)
 
+func animate_hint():
+    var tween = create_tween()
+    tween.tween_property(self, "modulate", Color(1, 1, 0, 1), 0.2)
+    tween.tween_property(self, "modulate", Color(1, 1, 1, 1), 0.2)
+    tween.tween_property(self, "modulate", Color(1, 1, 0, 1), 0.2)
+    tween.tween_property(self, "modulate", Color(1, 1, 1, 1), 0.2)
+
 func set_blocked(blocked: bool):
     is_blocked = blocked
     if blocked:

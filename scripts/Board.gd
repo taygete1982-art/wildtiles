@@ -23,6 +23,8 @@ func generate_level(level: int):
         add_child(tile)
         tiles.append(tile)
         grid[Vector3(pos.x, pos.y, pos.layer)] = tile
+    
+    update_blocked_tiles()
 
 func generate_positions(count: int) -> Array:
     var positions = []
@@ -60,3 +62,32 @@ func is_tile_available(tile: Tile) -> bool:
             if dx < 60 and dy < 60:
                 return false
     return true
+
+func update_blocked_tiles():
+    for tile in tiles:
+        tile.set_blocked(not is_tile_available(tile))
+
+func get_available_tiles() -> Array:
+    var available = []
+    for tile in tiles:
+        if is_tile_available(tile):
+            available.append(tile)
+    return available
+
+func get_hint() -> Tile:
+    var available = get_available_tiles()
+    if available.size() > 0:
+        return available[randi() % available.size()]
+    return null
+
+func shuffle_board():
+    var types = []
+    for tile in tiles:
+        types.append(tile.tile_type)
+    
+    types.shuffle()
+    
+    for i in range(tiles.size()):
+        tiles[i].setup(types[i])
+    
+    update_blocked_tiles()

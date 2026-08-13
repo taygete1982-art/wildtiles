@@ -9,6 +9,7 @@ run/main_scene="res://scenes/Main.tscn"
 GameManager="*res://scripts/GameManager.gd"
 LevelManager="*res://scripts/LevelManager.gd"
 SaveSystem="*res://scripts/SaveSystem.gd"
+HintSystem="*res://scripts/HintSystem.gd"
 
 [rendering]
 renderer/rendering_method="gl_compatibility"
