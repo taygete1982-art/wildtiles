@@ -1,5 +1,4 @@
-﻿extends Node2D
-class_name Tile
+extends Node2D
 
 var tile_type: String = ""
 var is_selected: bool = false
@@ -8,7 +7,7 @@ var is_blocked: bool = false
 
 func setup(type: String):
     tile_type = type
-    .text = type.substr(0, 2).to_upper()
+    get_node("Label").text = type.substr(0, 2).to_upper()
 
 func _on_area_2d_input_event(viewport, event, shape_idx):
     if event is InputEventMouseButton and event.pressed:

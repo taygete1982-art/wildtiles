@@ -1,5 +1,4 @@
-﻿extends Node
-class_name LevelManager
+extends Node
 
 const LEVEL_CONFIGS = {
     1: {"tile_count": 12, "types": 4},

@@ -1,5 +1,4 @@
-﻿extends Node
-class_name HintSystem
+extends Node
 
 var hint_uses: int = 3
 

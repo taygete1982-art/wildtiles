@@ -1,5 +1,4 @@
-﻿extends Node2D
-class_name Board
+extends Node2D
 
 var tiles: Array = []
 var tile_scene: PackedScene
@@ -51,7 +50,7 @@ func clear_board():
     tiles.clear()
     grid.clear()
 
-func is_tile_available(tile: Tile) -> bool:
+func is_tile_available(tile) -> bool:
     var tile_pos = tile.position
     for other_tile in tiles:
         if other_tile == tile:
@@ -74,7 +73,7 @@ func get_available_tiles() -> Array:
             available.append(tile)
     return available
 
-func get_hint() -> Tile:
+func get_hint():
     var available = get_available_tiles()
     if available.size() > 0:
         return available[randi() % available.size()]

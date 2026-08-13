@@ -1,5 +1,4 @@
-﻿extends Node2D
-class_name Tray
+extends Node2D
 
 const MAX_SLOTS: int = 7
 var tiles: Array = []
@@ -7,9 +6,9 @@ var slot_width: int = 70
 var history: Array = []
 
 func _ready():
-    .size = Vector2(MAX_SLOTS * slot_width + 20, 90)
+    get_node("Background").size = Vector2(MAX_SLOTS * slot_width + 20, 90)
 
-func add_tile(tile: Tile) -> bool:
+func add_tile(tile) -> bool:
     if tiles.size() >= MAX_SLOTS:
         return false
     
@@ -22,7 +21,7 @@ func add_tile(tile: Tile) -> bool:
     check_matches()
     return true
 
-func undo_last_tile() -> Tile:
+func undo_last_tile():
     if history.size() > 0:
         var tile = history.pop_back()
         tiles.erase(tile)

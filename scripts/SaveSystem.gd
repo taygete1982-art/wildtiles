@@ -1,5 +1,4 @@
-﻿extends Node
-class_name SaveSystem
+extends Node
 
 const SAVE_PATH = "user://save_data.json"
 

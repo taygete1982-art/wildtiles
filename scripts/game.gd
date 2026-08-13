@@ -1,17 +1,22 @@
-﻿extends Control
+extends Control
 
-@onready var board = 
-@onready var tray = 
-@onready var tool_panel = 
-@onready var score_label = 
-@onready var level_label = 
-@onready var win_screen = 
-@onready var lose_screen = 
-
-var win_scene = preload("res://scenes/WinScreen.tscn")
-var lose_scene = preload("res://scenes/LoseScreen.tscn")
+var board: Node
+var tray: Node
+var tool_panel: Node
+var score_label: Label
+var level_label: Label
+var win_screen: Node
+var lose_screen: Node
 
 func _ready():
+    board = get_node("Board")
+    tray = get_node("Tray")
+    tool_panel = get_node("ToolPanel")
+    score_label = get_node("ScoreLabel")
+    level_label = get_node("LevelLabel")
+    win_screen = get_node("WinScreen")
+    lose_screen = get_node("LoseScreen")
+    
     GameManager.tile_clicked.connect(_on_tile_clicked)
     GameManager.level_completed.connect(_on_level_completed)
     GameManager.game_over.connect(_on_game_over)
