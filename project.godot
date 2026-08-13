@@ -5,6 +5,9 @@ config/name="Wild Tiles"
 config/description="Tile-match puzzle with wild animals"
 run/main_scene="res://scenes/Main.tscn"
 
+[autoload]
+GameManager="*res://scripts/GameManager.gd"
+
 [rendering]
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
