@@ -1,0 +1,7 @@
+.godot/
+.import/
+export_presets.cfg
+exports/
+*.apk
+*.aab
+.vscode/
