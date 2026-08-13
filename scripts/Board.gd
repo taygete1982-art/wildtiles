@@ -35,12 +35,11 @@ func build_tile_list(count: int, num_types: int) -> Array:
     list.shuffle()
     return list
 
-# Верхний слой со смещением в полплитки накрывает нижние
 func generate_positions(count: int, layers: int) -> Array:
     var positions = []
     var per_layer = int(floorf(float(count) / float(layers)))
     var extra = count - per_layer * layers
-    var cols = 5
+    var cols = 8
     
     for layer in range(layers):
         var n = per_layer + (1 if layer < extra else 0)
