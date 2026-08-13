@@ -35,6 +35,8 @@ func _ready():
     start_level(GameManager.current_level)
 
 func start_level(level: int):
+    ThemeManager.set_chapter_from_level(level)
+    get_node("Background").apply_theme()
     board.generate_level(level)
     tray.clear()
     HintSystem.reset_hints()
@@ -45,13 +47,11 @@ func start_level(level: int):
 func _on_tile_clicked(tile):
     if GameManager.is_game_over:
         return
-    
     if board.is_tile_available(tile):
         if tray.add_tile(tile):
             board.tiles.erase(tile)
             board.update_blocked_tiles()
             update_ui()
-            
             if board.tiles.size() == 0:
                 GameManager.complete_level()
                 show_win_screen()
