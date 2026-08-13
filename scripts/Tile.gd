@@ -5,18 +5,18 @@ var is_clicked: bool = false
 var is_blocked: bool = false
 
 const CARD_COLORS = {
-    "giraffe": Color(1.00, 0.72, 0.25),
-    "zebra": Color(0.55, 0.75, 0.95),
-    "sloth": Color(0.85, 0.65, 0.45),
-    "elephant": Color(0.55, 0.65, 0.95),
-    "rhino": Color(0.75, 0.60, 0.95),
-    "panda": Color(0.45, 0.85, 0.85),
-    "parrot": Color(0.50, 0.90, 0.45),
-    "crocodile": Color(0.35, 0.75, 0.40),
-    "monkey": Color(0.95, 0.60, 0.35),
-    "snake": Color(0.30, 0.85, 0.60),
-    "owl": Color(0.85, 0.50, 0.35),
-    "frog": Color(0.55, 0.95, 0.35)
+    "chair": Color(0.95, 0.65, 0.35),
+    "sofa": Color(0.90, 0.45, 0.45),
+    "table": Color(0.80, 0.60, 0.40),
+    "bed": Color(0.60, 0.55, 0.85),
+    "lamp": Color(0.95, 0.80, 0.40),
+    "tv": Color(0.45, 0.55, 0.75),
+    "shelf": Color(0.70, 0.50, 0.35),
+    "plant": Color(0.45, 0.80, 0.45),
+    "clock": Color(0.85, 0.75, 0.60),
+    "fridge": Color(0.60, 0.80, 0.85),
+    "wardrobe": Color(0.75, 0.60, 0.50),
+    "sink": Color(0.65, 0.80, 0.90)
 }
 
 func setup(type: String):
