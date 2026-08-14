@@ -9,6 +9,7 @@ var level_label: Label
 var win_screen: Node
 var lose_screen: Node
 var album_bar: Node
+var level: int = 0
 
 func _ready():
     board = 
@@ -62,7 +63,8 @@ func _ready():
     
     start_level(GameManager.current_level)
 
-func start_level(level: int):
+func start_level(lvl: int):
+    level = lvl
     board.generate_level(level)
     tray.clear_all()
     HintSystem.reset_hints()
