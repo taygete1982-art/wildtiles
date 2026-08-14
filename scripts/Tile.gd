@@ -6,14 +6,14 @@ var is_blocked: bool = false
 var saved_position: Vector2 = Vector2.ZERO
 var saved_z: int = 0
 
-const ART_H = 86.0
+const ART_H = 110.0
 
 func setup(type: String):
     tile_type = type
     var path = "res://assets/art/patient_" + type + ".png"
     if ResourceLoader.exists(path):
         var tex = load(path)
-        var sprite = get_node("Art/Sprite")
+        var sprite = get_node("Art/Breath/Sprite")
         sprite.texture = tex
         var w = tex.get_width()
         var h = tex.get_height()
@@ -22,20 +22,29 @@ func setup(type: String):
         var s = ART_H / (h * 0.96)
         sprite.scale = Vector2(s, s)
     get_node("Art").rotation = randf_range(-0.03, 0.03)
-    start_breathing()
+    _start_breathing()
 
-func start_breathing():
-    var art = get_node("Art")
+func _start_breathing():
+    var breath = get_node("Art/Breath")
     var t = create_tween().set_loops()
     t.tween_interval(randf() * 1.5)
-    t.tween_property(art, "scale", Vector2(1.015, 1.015), 1.6).set_trans(Tween.TRANS_SINE)
-    t.tween_property(art, "scale", Vector2(1.0, 1.0), 1.6).set_trans(Tween.TRANS_SINE)
+    t.tween_property(breath, "scale", Vector2(1.015, 1.015), 1.6).set_trans(Tween.TRANS_SINE)
+    t.tween_property(breath, "scale", Vector2(1.0, 1.0), 1.6).set_trans(Tween.TRANS_SINE)
+
+func to_tray():
+    get_node("Art").scale = Vector2(0.6, 0.6)
+    get_node("Base").visible = false
+    get_node("Shadow").visible = false
+
+func from_tray():
+    get_node("Art").scale = Vector2(1.0, 1.0)
+    get_node("Base").visible = true
+    get_node("Shadow").visible = true
 
 func apply_layer(layer: int):
     var shadow = get_node("Shadow")
-    shadow.position = Vector2(layer * 1.5, layer * 2.0)
     shadow.material = shadow.material.duplicate()
-    shadow.material.set_shader_parameter("shadow_color", Color(0.05, 0.04, 0.06, 0.28 + layer * 0.06))
+    shadow.material.set_shader_parameter("shadow_color", Color(0.05, 0.04, 0.06, 0.30 + layer * 0.07))
 
 func _on_area_2d_input_event(_viewport, event, _shape_idx):
     if event is InputEventMouseButton and event.pressed:
@@ -51,7 +60,7 @@ func on_tile_clicked():
 
 func hop():
     var t = create_tween()
-    t.tween_property(self, "position:y", position.y - 14, 0.09).set_trans(Tween.TRANS_SINE)
+    t.tween_property(self, "position:y", position.y - 16, 0.09).set_trans(Tween.TRANS_SINE)
     t.tween_property(self, "position:y", position.y, 0.09).set_trans(Tween.TRANS_BOUNCE)
 
 func set_blocked(blocked: bool):

@@ -20,7 +20,7 @@ func generate_level(level: int):
         var tile = tile_scene.instantiate()
         tile.setup(assignment[pos.id])
         tile.apply_layer(pos.layer)
-        tile.position = Vector2(pos.x + 160, pos.y + 80 - pos.layer * 4)
+        tile.position = Vector2(pos.x + 60, pos.y + 50 - pos.layer * 10)
         tile.z_index = pos.layer * 10
         add_child(tile)
         tiles.append(tile)
@@ -74,7 +74,7 @@ func is_free_pos(pos: Dictionary, remaining: Array) -> bool:
         if other.layer > pos.layer:
             var dx = abs(other.x - pos.x)
             var dy = abs(other.y - pos.y)
-            if dx < 55 and dy < 70:
+            if dx < 85 and dy < 110:
                 return false
     return true
 
@@ -86,16 +86,16 @@ func build_groups(count: int, num_types: int) -> Array:
         groups.append(types[g % types.size()])
     return groups
 
-# Вертикальные плитки 58x80, слой со смещением в полплитки
+# 6 колонок x 6-8 рядов крупных вертикальных плиток
 func generate_positions(count: int, layers: int) -> Array:
     var positions = []
     var per_layer = int(floorf(float(count) / float(layers)))
     var extra = count - per_layer * layers
     var cols = 6
-    var sx = 62
-    var sy = 80
-    var hx = sx * 0.5
-    var hy = sy * 0.5
+    var sx = 96
+    var sy = 124
+    var hx = 48
+    var hy = 62
     var id = 0
     
     for layer in range(layers):
@@ -105,7 +105,7 @@ func generate_positions(count: int, layers: int) -> Array:
             var row = int(floorf(float(i) / float(cols)))
             positions.append({
                 "id": id,
-                "x": col * sx + layer * hx,
+                "x": col * sx + layer * hx - layer * 6,
                 "y": row * sy + layer * hy,
                 "layer": layer
             })
@@ -129,7 +129,7 @@ func is_tile_available(tile) -> bool:
         if other_tile.z_index > tile.z_index:
             var dx = abs(other_tile.position.x - tile.position.x)
             var dy = abs(other_tile.position.y - tile.position.y)
-            if dx < 55 and dy < 70:
+            if dx < 85 and dy < 110:
                 return false
     return true
 

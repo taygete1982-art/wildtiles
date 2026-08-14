@@ -20,6 +20,7 @@ func add_tile(tile) -> bool:
     tile.position = Vector2(tiles.size() * slot_width + 10, 45)
     tile.get_parent().remove_child(tile)
     add_child(tile)
+    tile.to_tray()
     
     check_matches()
     update_warning()
@@ -37,6 +38,7 @@ func undo_last_tile():
         var tile = history.pop_back()
         tiles.erase(tile)
         remove_child(tile)
+        tile.from_tray()
         reposition_tiles()
         update_warning()
         return tile
