@@ -26,6 +26,8 @@ offset_right = 700.0
 offset_bottom = 120.0
 text = "Монеты: 0"
 
+[node name="Grid" type="Node2D" parent="."]
+
 [node name="BackButton" type="Button" parent="."]
 offset_left = 280.0
 offset_top = 1180.0

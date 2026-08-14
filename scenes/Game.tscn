@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/Background.tscn" id="2"]
@@ -8,6 +8,9 @@
 [ext_resource type="PackedScene" path="res://scenes/WinScreen.tscn" id="6"]
 [ext_resource type="PackedScene" path="res://scenes/LoseScreen.tscn" id="7"]
 [ext_resource type="PackedScene" path="res://scenes/AlbumBar.tscn" id="8"]
+[ext_resource type="PackedScene" path="res://scenes/PauseScreen.tscn" id="9"]
+[ext_resource type="PackedScene" path="res://scenes/StoryCard.tscn" id="10"]
+[ext_resource type="PackedScene" path="res://scenes/Tutorial.tscn" id="11"]
 
 [node name="Game" type="Control"]
 layout_mode = 3
@@ -40,14 +43,30 @@ text = "Счёт: 0"
 
 [node name="LevelLabel" type="Label" parent="."]
 mouse_filter = 2
-offset_left = 500.0
+offset_left = 420.0
 offset_top = 20.0
-offset_right = 700.0
+offset_right = 620.0
 offset_bottom = 55.0
 text = "Уровень: 1"
+
+[node name="MenuButton" type="Button" parent="."]
+offset_left = 640.0
+offset_top = 15.0
+offset_right = 705.0
+offset_bottom = 60.0
+text = "II"
 
 [node name="WinScreen" parent="." instance=ExtResource("6")]
 visible = false
 
 [node name="LoseScreen" parent="." instance=ExtResource("7")]
+visible = false
+
+[node name="PauseScreen" parent="." instance=ExtResource("9")]
+visible = false
+
+[node name="StoryCard" parent="." instance=ExtResource("10")]
+visible = false
+
+[node name="Tutorial" parent="." instance=ExtResource("11")]
 visible = false
