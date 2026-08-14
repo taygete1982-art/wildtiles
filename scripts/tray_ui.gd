@@ -51,14 +51,14 @@ func _redraw():
         if c.name.begins_with("Slot"):
             c.queue_free()
     for i in range(entries.size()):
-        var tr = TextureRect.new()
-        tr.name = "Slot" + str(i)
-        tr.texture = make_icon(entries[i].type)
-        tr.position = Vector2(10 + i * 70, 5)
-        tr.size = Vector2(60, 80)
-        tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-        tr.mouse_filter = Control.MOUSE_FILTER_IGNORE
-        add_child(tr)
+        var trect = TextureRect.new()
+        trect.name = "Slot" + str(i)
+        trect.texture = make_icon(entries[i].type)
+        trect.position = Vector2(10 + i * 70, 5)
+        trect.size = Vector2(60, 80)
+        trect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+        trect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+        add_child(trect)
     update_warning()
 
 func update_warning():

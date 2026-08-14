@@ -43,16 +43,16 @@ func restore(t):
 
 func try_generate_solvable(positions: Array, groups: Array) -> Dictionary:
     for attempt in range(8):
-        var remaining = positions.duplicate(true)
+        var avail = positions.duplicate(true)
         var seq = groups.duplicate()
         seq.shuffle()
         var assign = {}
         var ok = true
         
-        while remaining.size() > 0:
+        while avail.size() > 0:
             var free = []
-            for i in range(remaining.size()):
-                if is_free_pos(remaining[i], remaining):
+            for i in range(avail.size()):
+                if is_free_pos(avail[i], avail):
                     free.append(i)
             if free.size() < 3:
                 ok = false
@@ -61,10 +61,10 @@ func try_generate_solvable(positions: Array, groups: Array) -> Dictionary:
             var t = seq.pop_back()
             var picked = [free[0], free[1], free[2]]
             for pi in picked:
-                assign[remaining[pi].id] = t
+                assign[avail[pi].id] = t
             picked.sort()
             for k in range(picked.size() - 1, -1, -1):
-                remaining.remove_at(picked[k])
+                avail.remove_at(picked[k])
         if ok:
             return assign
     return {}
@@ -81,8 +81,8 @@ func fallback_assignment(positions: Array, groups: Array) -> Dictionary:
         assign[positions[i].id] = flat[i]
     return assign
 
-func is_free_pos(pos: Dictionary, rem: Array) -> bool:
-    for other in rem:
+func is_free_pos(pos: Dictionary, avail: Array) -> bool:
+    for other in avail:
         if other == pos:
             continue
         if other.layer > pos.layer:
