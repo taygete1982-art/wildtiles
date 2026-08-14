@@ -26,13 +26,13 @@ func _ready():
     var light = DirectionalLight3D.new()
     light.shadow_enabled = false
     light.rotation_degrees = Vector3(-50, -20, 0)
-    light.light_energy = 1.4
+    light.light_energy = 1.2
     add_child(light)
     
     var fill = DirectionalLight3D.new()
     fill.shadow_enabled = false
     fill.rotation_degrees = Vector3(-60, 140, 0)
-    fill.light_energy = 0.5
+    fill.light_energy = 0.4
     fill.light_color = Color(1.0, 0.85, 0.7)
     add_child(fill)
     
@@ -46,9 +46,10 @@ func _ready():
     table.position = Vector3(3, -0.08, 3.8)
     add_child(table)
     
-    cam.position = Vector3(3.0, -1.5, 12.0)
-    cam.look_at(Vector3(3.0, 4.2, 0.0), Vector3.UP)
-    cam.fov = 50
+    cam.position = Vector3(3.1, -4.8, 11.5)
+    cam.rotation_degrees = Vector3(52, 0, 0)
+    cam.fov = 55
+    print("CAM POS: ", cam.position, " ROT: ", cam.rotation_degrees)
     
     var ui = $UILayer/UIRoot
     tray = ui.get_node("TrayUI")

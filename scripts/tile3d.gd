@@ -50,7 +50,7 @@ func _apply_texture():
         face_mat.uv1_offset = Vector3(0.28, 0.02, 0)
         face_mat.emission_enabled = true
         face_mat.emission = Color(1, 1, 1)
-        face_mat.emission_energy = 0.9
+        face_mat.emission_energy = 0.55
         face_mat.emission_texture = tex
     else:
         print("НЕТ ТЕКСТУРЫ: ", path)
@@ -69,9 +69,9 @@ func set_blocked(b: bool):
     is_blocked = b
     if b:
         face_mat.albedo_color = Color(0.55, 0.58, 0.68)
-        face_mat.emission_energy = 0.25
+        face_mat.emission_energy = 0.2
         box_mat.albedo_color = Color(0.45, 0.45, 0.5)
     else:
         face_mat.albedo_color = Color(1, 1, 1)
-        face_mat.emission_energy = 0.9
+        face_mat.emission_energy = 0.55
         box_mat.albedo_color = Color(0.93, 0.90, 0.84)
