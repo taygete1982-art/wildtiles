@@ -22,7 +22,15 @@ func add_tile(tile) -> bool:
     add_child(tile)
     
     check_matches()
+    update_warning()
     return true
+
+func update_warning():
+    var bg = get_node("Background")
+    if tiles.size() >= MAX_SLOTS - 1:
+        bg.color = Color(0.55, 0.12, 0.12, 1)
+    else:
+        bg.color = Color(0.2, 0.2, 0.2, 1)
 
 func undo_last_tile():
     if history.size() > 0:
@@ -30,6 +38,7 @@ func undo_last_tile():
         tiles.erase(tile)
         remove_child(tile)
         reposition_tiles()
+        update_warning()
         return tile
     return null
 
@@ -68,3 +77,4 @@ func clear():
         tile.queue_free()
     tiles.clear()
     history.clear()
+    update_warning()
