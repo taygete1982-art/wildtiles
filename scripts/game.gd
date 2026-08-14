@@ -95,7 +95,7 @@ func show_win_screen():
     win_screen.get_node("ScoreLabel").text = "Счёт: " + str(GameManager.score)
     var reward = CollectionManager.roll_win_reward()
     if reward.type == "item":
-        win_screen.show_drop(reward.item, reward.variant, not reward.dup)
+        win_screen.show_drop(reward.item, reward.caption)
     elif reward.type == "key":
         win_screen.show_key()
         ThemeManager.set_chapter(CollectionManager.house_tier)

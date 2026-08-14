@@ -9,23 +9,19 @@ func _on_next_level_button_pressed():
 func _on_restart_button_pressed():
     restart_requested.emit()
 
-func show_drop(item: String, variant: int, is_new: bool):
+func show_drop(item: String, caption: String):
     var icon = get_node("DropIcon")
     var label = get_node("DropLabel")
-    var path = "res://assets/tiles/" + item + ".png"
+    var path = "res://assets/art/sticker_" + item + ".png"
     if ResourceLoader.exists(path):
         icon.texture = load(path)
-    var mat = ShaderMaterial.new()
-    mat.shader = load("res://shaders/variant.gdshader")
-    mat.set_shader_parameter("hue_shift", variant * 0.25)
-    mat.set_shader_parameter("silhouette", 0.0)
-    icon.material = mat
+    icon.material = null
     icon.visible = true
-    label.text = ("Новое: " if is_new else "Перекрас: ") + item + "!"
+    label.text = caption + " [" + CollectionManager.ITEM_NAMES[item] + "]"
 
 func show_coins(amount: int):
     get_node("DropIcon").visible = false
-    get_node("DropLabel").text = "+" + str(amount) + " монет"
+    get_node("DropLabel").text = "+" + str(amount) + " монет в копилку"
 
 func show_key():
     get_node("DropIcon").visible = false

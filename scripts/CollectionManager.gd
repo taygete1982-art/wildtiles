@@ -1,9 +1,23 @@
 extends Node
 
-const ITEMS = ["chair", "sofa", "table", "bed", "lamp", "tv",
-               "shelf", "plant", "clock", "fridge", "wardrobe", "sink"]
-const VARIANTS = 4
+const PATIENTS = ["lion", "zebra", "giraffe", "hippo", "meerkat", "owl",
+                  "croc", "frog", "monkey", "turtle", "hedgehog", "cat"]
+const ITEMS = ["desk", "bed", "chair", "wardrobe", "lamp", "fridge",
+               "shelf", "poster", "nightstand", "plant", "clock", "rug"]
 const HOUSE_NAMES = {1: "Каморка", 2: "Квартира", 3: "Дом", 4: "Особняк"}
+const ITEM_NAMES = {
+    "desk": "Стол", "bed": "Кровать", "chair": "Стул", "wardrobe": "Шкаф",
+    "lamp": "Торшер", "fridge": "Холодильник", "shelf": "Полка", "poster": "Постер",
+    "nightstand": "Тумбочка", "plant": "Алоэ", "clock": "Будильник", "rug": "Коврик"
+}
+const CAPTIONS = [
+    "Сосед съехал — теперь твоё!",
+    "Урвал на барахолке. Пахнет бабушкой, зато крепкое.",
+    "Бабушка прислала денег — хватило ровно на это.",
+    "Нашёл у общаги. Отстирал — как новое.",
+    "Выменял у коменданта на дежурство.",
+    "Досталось по распределению. Не спрашивай."
+]
 
 var house_tier = 1
 var albums = {1: {}, 2: {}, 3: {}, 4: {}}
@@ -14,14 +28,14 @@ var key_pity = 0
 func current_album() -> Dictionary:
     return albums[house_tier]
 
-func get_variant(item: String) -> int:
-    return current_album().get(item, -1)
+func owns(item: String) -> bool:
+    return current_album().has(item)
 
 func album_complete() -> bool:
     return current_album().size() >= ITEMS.size()
 
-func add(item: String, variant: int):
-    albums[house_tier][item] = variant
+func add(item: String):
+    albums[house_tier][item] = true
     persist()
 
 func roll_win_reward() -> Dictionary:
@@ -40,22 +54,22 @@ func roll_win_reward() -> Dictionary:
     if randf() <= 0.35 + item_pity * 0.05:
         item_pity = 0
         var item = ITEMS[randi() % ITEMS.size()]
-        var variant = randi() % VARIANTS
-        var is_dup = current_album().has(item)
-        albums[house_tier][item] = variant
-        if is_dup:
+        if owns(item):
             coins += 2
-        persist()
-        return {"type": "item", "item": item, "variant": variant, "dup": is_dup}
+            persist()
+            return {"type": "coins", "amount": 2}
+        add(item)
+        var caption = CAPTIONS[randi() % CAPTIONS.size()]
+        return {"type": "item", "item": item, "caption": caption}
     
     coins += 5
     persist()
     return {"type": "coins", "amount": 5}
 
 func buy_missing(item: String) -> bool:
-    if coins >= 50 and not current_album().has(item):
+    if coins >= 50 and not owns(item):
         coins -= 50
-        albums[house_tier][item] = randi() % VARIANTS
+        albums[house_tier][item] = true
         persist()
         return true
     return false
@@ -73,7 +87,10 @@ func try_load_save():
     if d.has("albums"):
         albums = {}
         for k in d["albums"].keys():
-            albums[int(k)] = d["albums"][k]
+            var inner = {}
+            for it in d["albums"][k].keys():
+                inner[it] = true
+            albums[int(k)] = inner
         for t in [1, 2, 3, 4]:
             if not albums.has(t):
                 albums[t] = {}

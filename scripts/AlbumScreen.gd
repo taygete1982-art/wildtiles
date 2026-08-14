@@ -1,12 +1,13 @@
 extends Control
 
-const ITEMS = ["chair", "sofa", "table", "bed", "lamp", "tv",
-               "shelf", "plant", "clock", "fridge", "wardrobe", "sink"]
+const ITEMS = ["desk", "bed", "chair", "wardrobe", "lamp", "fridge",
+               "shelf", "poster", "nightstand", "plant", "clock", "rug"]
 
 func _ready():
     build()
 
 func build():
+    get_node("CoinsLabel").text = "Монеты: " + str(CollectionManager.coins)
     for i in range(ITEMS.size()):
         var item = ITEMS[i]
         var col = i % 3
@@ -15,7 +16,7 @@ func build():
         var y = 140 + row * 260
         
         var rect = TextureRect.new()
-        var path = "res://assets/tiles/" + item + ".png"
+        var path = "res://assets/art/sticker_" + item + ".png"
         if ResourceLoader.exists(path):
             rect.texture = load(path)
         rect.position = Vector2(x, y)
@@ -24,17 +25,15 @@ func build():
         
         var mat = ShaderMaterial.new()
         mat.shader = load("res://shaders/variant.gdshader")
-        var v = CollectionManager.get_variant(item)
-        if v >= 0:
+        if CollectionManager.owns(item):
             mat.set_shader_parameter("silhouette", 0.0)
-            mat.set_shader_parameter("hue_shift", v * 0.25)
         else:
             mat.set_shader_parameter("silhouette", 1.0)
         rect.material = mat
         add_child(rect)
         
         var label = Label.new()
-        label.text = item + (" ✓" if v >= 0 else "")
+        label.text = CollectionManager.ITEM_NAMES[item] + (" ✓" if CollectionManager.owns(item) else " 🔒")
         label.position = Vector2(x + 30, y + 165)
         add_child(label)
 

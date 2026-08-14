@@ -1,7 +1,7 @@
 extends Control
 
-const ITEMS = ["chair", "sofa", "table", "bed", "lamp", "tv",
-               "shelf", "plant", "clock", "fridge", "wardrobe", "sink"]
+const ITEMS = ["desk", "bed", "chair", "wardrobe", "lamp", "fridge",
+               "shelf", "poster", "nightstand", "plant", "clock", "rug"]
 const SLOT_W = 52
 
 func _ready():
@@ -15,7 +15,7 @@ func refresh():
     for i in range(ITEMS.size()):
         var item = ITEMS[i]
         var rect = TextureRect.new()
-        var path = "res://assets/tiles/" + item + ".png"
+        var path = "res://assets/art/sticker_" + item + ".png"
         if ResourceLoader.exists(path):
             rect.texture = load(path)
         rect.name = "Slot_" + item
@@ -26,10 +26,8 @@ func refresh():
         
         var mat = ShaderMaterial.new()
         mat.shader = load("res://shaders/variant.gdshader")
-        var v = CollectionManager.get_variant(item)
-        if v >= 0:
+        if CollectionManager.owns(item):
             mat.set_shader_parameter("silhouette", 0.0)
-            mat.set_shader_parameter("hue_shift", v * 0.25)
         else:
             mat.set_shader_parameter("silhouette", 1.0)
         rect.material = mat

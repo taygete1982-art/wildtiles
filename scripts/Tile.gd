@@ -6,85 +6,79 @@ var is_blocked: bool = false
 var saved_position: Vector2 = Vector2.ZERO
 var saved_z: int = 0
 
-const CARD_COLORS = {
-	"chair": Color(0.95, 0.65, 0.35),
-	"sofa": Color(0.90, 0.45, 0.45),
-	"table": Color(0.80, 0.60, 0.40),
-	"bed": Color(0.60, 0.55, 0.85),
-	"lamp": Color(0.95, 0.80, 0.40),
-	"tv": Color(0.45, 0.55, 0.75),
-	"shelf": Color(0.70, 0.50, 0.35),
-	"plant": Color(0.45, 0.80, 0.45),
-	"clock": Color(0.85, 0.75, 0.60),
-	"fridge": Color(0.60, 0.80, 0.85),
-	"wardrobe": Color(0.75, 0.60, 0.50),
-	"sink": Color(0.65, 0.80, 0.90)
-}
+const ART_SIZE = 66.0
 
 func setup(type: String):
-	tile_type = type
-	var parts = type.split(":")
-	var item = parts[0]
-	var variant = 0
-	if parts.size() > 1:
-		variant = int(parts[1])
-	var hue = float(variant) * 0.25
-	var base = CARD_COLORS.get(item, Color(0.9, 0.9, 0.9))
-	
-	var card = get_node("Card")
-	card.material = card.material.duplicate()
-	card.material.set_shader_parameter("base_color", base)
-	card.material.set_shader_parameter("hue_shift", hue)
-	card.material.set_shader_parameter("saturation", ThemeManager.get_saturation())
-	
-	var path = "res://assets/tiles/" + item + ".png"
-	if ResourceLoader.exists(path):
-		var tex = load(path)
-		var sprite = get_node("Sprite")
-		sprite.texture = tex
-		var s = 52.0 / max(tex.get_width(), tex.get_height())
-		sprite.scale = Vector2(s, s)
-		sprite.material = sprite.material.duplicate()
-		sprite.material.set_shader_parameter("hue_shift", hue)
-		sprite.material.set_shader_parameter("saturation", ThemeManager.get_saturation())
-		sprite.material.set_shader_parameter("silhouette", 0.0)
+    tile_type = type
+    var path = "res://assets/art/patient_" + type + ".png"
+    if ResourceLoader.exists(path):
+        var tex = load(path)
+        var sprite = get_node("Art/Sprite")
+        sprite.texture = tex
+        var s = ART_SIZE / max(tex.get_width(), tex.get_height())
+        sprite.scale = Vector2(s, s)
+    get_node("Art").rotation = randf_range(-0.05, 0.05)
+    start_breathing()
+
+func start_breathing():
+    var art = get_node("Art")
+    var t = create_tween().set_loops()
+    t.tween_interval(randf() * 1.0)
+    t.tween_property(art, "scale", Vector2(1.04, 1.04), 0.8).set_trans(Tween.TRANS_SINE)
+    t.tween_property(art, "scale", Vector2(1.0, 1.0), 0.8).set_trans(Tween.TRANS_SINE)
 
 func apply_layer(layer: int):
-	var shadow = get_node("Shadow")
-	shadow.position = Vector2(layer * 1.5, layer * 2.0)
-	shadow.material = shadow.material.duplicate()
-	shadow.material.set_shader_parameter("shadow_color", Color(0.06, 0.05, 0.10, 0.28 + layer * 0.06))
+    var shadow = get_node("Shadow")
+    shadow.position = Vector2(layer * 1.5, layer * 2.0)
+    shadow.material = shadow.material.duplicate()
+    shadow.material.set_shader_parameter("shadow_color", Color(0.05, 0.04, 0.06, 0.28 + layer * 0.06))
 
 func _on_area_2d_input_event(_viewport, event, _shape_idx):
-	if event is InputEventMouseButton and event.pressed:
-		on_tile_clicked()
+    if event is InputEventMouseButton and event.pressed:
+        on_tile_clicked()
 
 func on_tile_clicked():
-	if is_blocked:
-		return
-	if not is_clicked:
-		is_clicked = true
-		animate_click()
-		GameManager.on_tile_clicked(self)
+    if is_blocked:
+        return
+    if not is_clicked:
+        is_clicked = true
+        hop()
+        GameManager.on_tile_clicked(self)
 
-func animate_click():
-	var tween = create_tween()
-	tween.tween_property(self, "scale", Vector2(1.2, 1.2), 0.1)
-	tween.tween_property(self, "scale", Vector2(1.0, 1.0), 0.1)
-
-func animate_hint():
-	var tween = create_tween()
-	tween.tween_property(self, "modulate", Color(1, 1, 0, 1), 0.2)
-	tween.tween_property(self, "modulate", Color(1, 1, 1, 1), 0.2)
+func hop():
+    var t = create_tween()
+    t.tween_property(self, "position:y", position.y - 14, 0.09).set_trans(Tween.TRANS_SINE)
+    t.tween_property(self, "position:y", position.y, 0.09).set_trans(Tween.TRANS_BOUNCE)
 
 func set_blocked(blocked: bool):
-	is_blocked = blocked
-	if blocked:
-		modulate = Color(0.5, 0.5, 0.5, 0.7)
-	else:
-		modulate = Color(1, 1, 1, 1)
+    is_blocked = blocked
+    var art = get_node("Art")
+    if blocked:
+        art.modulate = Color(0.55, 0.6, 0.72, 0.9)
+    else:
+        art.modulate = Color(1, 1, 1, 1)
 
 func animate_removal():
-	var tween = create_tween()
-	tween.tween_property(self, "scale", Vector2(0, 0), 0.2)
-	tween.tween_callback(queue_free)
+    var art = get_node("Art")
+    art.modulate = Color(2.0, 1.8, 1.2, 1)
+    spawn_particles()
+    var t = create_tween()
+    t.tween_interval(0.12)
+    t.tween_property(self, "scale", Vector2(0, 0), 0.18)
+    t.tween_callback(queue_free)
+
+func spawn_particles():
+    var p = GPUParticles2D.new()
+    p.amount = 14
+    p.lifetime = 0.5
+    p.one_shot = true
+    p.emitting = true
+    var m = ParticleProcessMaterial.new()
+    m.direction = Vector3(0, -1, 0)
+    m.spread = 180.0
+    m.initial_velocity_min = 60.0
+    m.initial_velocity_max = 150.0
+    m.gravity = Vector3(0, 300, 0)
+    m.color = Color(1.0, 0.85, 0.4, 1.0)
+    p.process_material = m
+    add_child(p)
