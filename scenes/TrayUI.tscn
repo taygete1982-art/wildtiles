@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/tray_ui.gd" id="1"]
+
+[node name="TrayUI" type="Control"]
+mouse_filter = 2
+script = ExtResource("1")
+
+[node name="Background" type="ColorRect" parent="."]
+mouse_filter = 2
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 510.0
+offset_bottom = 90.0
+color = Color(0.15, 0.12, 0.10, 0.9)
