@@ -20,10 +20,15 @@ func generate_level(level: int):
         var tile = tile_scene.instantiate()
         tile.setup(assignment[pos.id])
         tile.apply_layer(pos.layer)
-        tile.position = Vector2(pos.x + 70 + pos.layer * 8, pos.y + 60 - pos.layer * 14)
+        tile.position = Vector2(pos.x + 60 + pos.layer * 8, pos.y + 60 - pos.layer * 14)
         tile.z_index = pos.layer * 10
         add_child(tile)
         tiles.append(tile)
+    
+    var idxs = range(tiles.size())
+    idxs.shuffle()
+    for i in range(mini(6, tiles.size())):
+        tiles[idxs[i]].make_lucky()
     
     update_blocked_tiles()
 
@@ -91,9 +96,9 @@ func generate_positions(count: int, layers: int) -> Array:
     var per_layer = int(floorf(float(count) / float(layers)))
     var extra = count - per_layer * layers
     var cols = 6
-    var sx = 96
+    var sx = 88
     var sy = 124
-    var hx = 48
+    var hx = 44
     var hy = 62
     var id = 0
     

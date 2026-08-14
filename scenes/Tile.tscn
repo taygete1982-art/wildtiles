@@ -11,7 +11,7 @@ shader_parameter/softness = 0.2
 
 [sub_resource type="ShaderMaterial" id="BodyMat"]
 shader = ExtResource("2")
-shader_parameter/shadow_color = Color(0.45, 0.32, 0.20, 1)
+shader_parameter/shadow_color = Color(0.18, 0.42, 0.33, 1)
 shader_parameter/corner_radius = 0.12
 shader_parameter/softness = 0.02
 
@@ -39,9 +39,7 @@ offset_bottom = 65.0
 
 [node name="Art" type="Node2D" parent="."]
 
-[node name="Breath" type="Node2D" parent="Art"]
-
-[node name="Sprite" type="Sprite2D" parent="Art/Breath"]
+[node name="Sprite" type="Sprite2D" parent="Art"]
 
 [node name="Area2D" type="Area2D" parent="."]
 input_pickable = true

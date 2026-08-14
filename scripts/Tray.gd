@@ -61,6 +61,8 @@ func remove_tiles_of_type(type: String):
             to_remove.append(tile)
     
     for tile in to_remove:
+        if tile.is_lucky:
+            CollectionManager.lucky_pending += 1
         tiles.erase(tile)
         history.erase(tile)
         tile.animate_removal()

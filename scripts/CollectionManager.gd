@@ -24,6 +24,7 @@ var albums = {1: {}, 2: {}, 3: {}, 4: {}}
 var coins = 0
 var item_pity = 0
 var key_pity = 0
+var lucky_pending = 0
 
 func current_album() -> Dictionary:
     return albums[house_tier]
@@ -39,6 +40,11 @@ func add(item: String):
     persist()
 
 func roll_win_reward() -> Dictionary:
+    if lucky_pending > 0:
+        lucky_pending -= 1
+        persist()
+        return _drop_item("Золотая плитка принесла:")
+    
     if album_complete() and house_tier < 4:
         key_pity += 1
         if randf() <= 0.25 + key_pity * 0.10:
@@ -53,18 +59,26 @@ func roll_win_reward() -> Dictionary:
     item_pity += 1
     if randf() <= 0.35 + item_pity * 0.05:
         item_pity = 0
-        var item = ITEMS[randi() % ITEMS.size()]
-        if owns(item):
-            coins += 2
-            persist()
-            return {"type": "coins", "amount": 2}
-        add(item)
-        var caption = CAPTIONS[randi() % CAPTIONS.size()]
-        return {"type": "item", "item": item, "caption": caption}
+        return _drop_item(CAPTIONS[randi() % CAPTIONS.size()])
     
     coins += 5
     persist()
     return {"type": "coins", "amount": 5}
+
+func _drop_item(caption: String) -> Dictionary:
+    var missing = []
+    for it in ITEMS:
+        if not owns(it):
+            missing.append(it)
+    var item = ""
+    if missing.size() > 0:
+        item = missing[randi() % missing.size()]
+    else:
+        item = ITEMS[randi() % ITEMS.size()]
+        coins += 2
+    add(item)
+    persist()
+    return {"type": "item", "item": item, "caption": caption}
 
 func buy_missing(item: String) -> bool:
     if coins >= 50 and not owns(item):
@@ -79,6 +93,7 @@ func persist():
         "albums": albums,
         "tier": house_tier,
         "coins": coins,
+        "lucky": lucky_pending,
         "level": GameManager.current_level
     })
 
@@ -98,5 +113,7 @@ func try_load_save():
         house_tier = d["tier"]
     if d.has("coins"):
         coins = d["coins"]
+    if d.has("lucky"):
+        lucky_pending = d["lucky"]
     if d.has("level"):
         GameManager.current_level = d["level"]
