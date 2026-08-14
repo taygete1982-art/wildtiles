@@ -20,7 +20,7 @@ func generate_level(level: int):
         var tile = tile_scene.instantiate()
         tile.setup(assignment[pos.id])
         tile.apply_layer(pos.layer)
-        tile.position = Vector2(pos.x + 60, pos.y + 60 - pos.layer * 3)
+        tile.position = Vector2(pos.x + 160, pos.y + 80 - pos.layer * 4)
         tile.z_index = pos.layer * 10
         add_child(tile)
         tiles.append(tile)
@@ -74,7 +74,7 @@ func is_free_pos(pos: Dictionary, remaining: Array) -> bool:
         if other.layer > pos.layer:
             var dx = abs(other.x - pos.x)
             var dy = abs(other.y - pos.y)
-            if dx < 50 and dy < 50:
+            if dx < 55 and dy < 70:
                 return false
     return true
 
@@ -86,13 +86,16 @@ func build_groups(count: int, num_types: int) -> Array:
         groups.append(types[g % types.size()])
     return groups
 
+# Вертикальные плитки 58x80, слой со смещением в полплитки
 func generate_positions(count: int, layers: int) -> Array:
     var positions = []
     var per_layer = int(floorf(float(count) / float(layers)))
     var extra = count - per_layer * layers
-    var cols = clampi(ceili(float(per_layer) / 2.0), 5, 8)
-    var spacing = 64 if per_layer > 16 else 72
-    var half = spacing * 0.5
+    var cols = 6
+    var sx = 62
+    var sy = 80
+    var hx = sx * 0.5
+    var hy = sy * 0.5
     var id = 0
     
     for layer in range(layers):
@@ -102,8 +105,8 @@ func generate_positions(count: int, layers: int) -> Array:
             var row = int(floorf(float(i) / float(cols)))
             positions.append({
                 "id": id,
-                "x": col * spacing + layer * half,
-                "y": row * spacing + layer * half,
+                "x": col * sx + layer * hx,
+                "y": row * sy + layer * hy,
                 "layer": layer
             })
             id += 1
@@ -126,7 +129,7 @@ func is_tile_available(tile) -> bool:
         if other_tile.z_index > tile.z_index:
             var dx = abs(other_tile.position.x - tile.position.x)
             var dy = abs(other_tile.position.y - tile.position.y)
-            if dx < 50 and dy < 50:
+            if dx < 55 and dy < 70:
                 return false
     return true
 

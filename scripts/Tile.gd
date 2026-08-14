@@ -6,7 +6,7 @@ var is_blocked: bool = false
 var saved_position: Vector2 = Vector2.ZERO
 var saved_z: int = 0
 
-const ART_SIZE = 66.0
+const ART_H = 86.0
 
 func setup(type: String):
     tile_type = type
@@ -15,17 +15,21 @@ func setup(type: String):
         var tex = load(path)
         var sprite = get_node("Art/Sprite")
         sprite.texture = tex
-        var s = ART_SIZE / max(tex.get_width(), tex.get_height())
+        var w = tex.get_width()
+        var h = tex.get_height()
+        sprite.region_enabled = true
+        sprite.region_rect = Rect2(w * 0.28, h * 0.02, w * 0.44, h * 0.96)
+        var s = ART_H / (h * 0.96)
         sprite.scale = Vector2(s, s)
-    get_node("Art").rotation = randf_range(-0.05, 0.05)
+    get_node("Art").rotation = randf_range(-0.03, 0.03)
     start_breathing()
 
 func start_breathing():
     var art = get_node("Art")
     var t = create_tween().set_loops()
-    t.tween_interval(randf() * 1.0)
-    t.tween_property(art, "scale", Vector2(1.04, 1.04), 0.8).set_trans(Tween.TRANS_SINE)
-    t.tween_property(art, "scale", Vector2(1.0, 1.0), 0.8).set_trans(Tween.TRANS_SINE)
+    t.tween_interval(randf() * 1.5)
+    t.tween_property(art, "scale", Vector2(1.015, 1.015), 1.6).set_trans(Tween.TRANS_SINE)
+    t.tween_property(art, "scale", Vector2(1.0, 1.0), 1.6).set_trans(Tween.TRANS_SINE)
 
 func apply_layer(layer: int):
     var shadow = get_node("Shadow")
@@ -54,7 +58,7 @@ func set_blocked(blocked: bool):
     is_blocked = blocked
     var art = get_node("Art")
     if blocked:
-        art.modulate = Color(0.55, 0.6, 0.72, 0.9)
+        art.modulate = Color(0.55, 0.58, 0.68, 1)
     else:
         art.modulate = Color(1, 1, 1, 1)
 
