@@ -26,6 +26,7 @@ func setup(type: String):
     pm.size = Vector2(0.9, 1.14)
     face.mesh = pm
     face_mat = StandardMaterial3D.new()
+    face_mat.cull_mode = StandardMaterial3D.CULL_DISABLED
     _apply_texture()
     face.material_override = face_mat
     face.rotation_degrees = Vector3(-90, 0, 0)
@@ -47,6 +48,12 @@ func _apply_texture():
         face_mat.albedo_texture = tex
         face_mat.uv1_scale = Vector3(0.44, 0.96, 1)
         face_mat.uv1_offset = Vector3(0.28, 0.02, 0)
+        face_mat.emission_enabled = true
+        face_mat.emission = Color(1, 1, 1)
+        face_mat.emission_energy = 0.9
+        face_mat.emission_texture = tex
+    else:
+        print("НЕТ ТЕКСТУРЫ: ", path)
 
 func set_type(t: String):
     tile_type = t
@@ -62,7 +69,9 @@ func set_blocked(b: bool):
     is_blocked = b
     if b:
         face_mat.albedo_color = Color(0.55, 0.58, 0.68)
+        face_mat.emission_energy = 0.25
         box_mat.albedo_color = Color(0.45, 0.45, 0.5)
     else:
         face_mat.albedo_color = Color(1, 1, 1)
+        face_mat.emission_energy = 0.9
         box_mat.albedo_color = Color(0.93, 0.90, 0.84)

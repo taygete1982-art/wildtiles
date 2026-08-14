@@ -14,6 +14,7 @@ var level: int = 0
 func _ready():
     board = $Board3D
     cam = $Camera3D
+    cam.current = true
     
     var env = Environment.new()
     env.background_mode = Environment.BG_COLOR
@@ -45,8 +46,8 @@ func _ready():
     table.position = Vector3(3, -0.08, 3.8)
     add_child(table)
     
-    cam.position = Vector3(3.0, -2.6, 10.5)
-    cam.look_at(Vector3(3.0, 3.9, 0.0), Vector3.UP)
+    cam.position = Vector3(3.0, -1.5, 12.0)
+    cam.look_at(Vector3(3.0, 4.2, 0.0), Vector3.UP)
     cam.fov = 50
     
     var ui = $UILayer/UIRoot
