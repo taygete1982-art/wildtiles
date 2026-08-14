@@ -37,7 +37,7 @@ func _ready():
     start_level(GameManager.current_level)
 
 func start_level(level: int):
-    ThemeManager.set_chapter_from_level(level)
+    ThemeManager.set_chapter(CollectionManager.house_tier)
     get_node("Background").apply_theme()
     board.generate_level(level)
     tray.clear()
@@ -93,13 +93,14 @@ func _on_game_over():
 
 func show_win_screen():
     win_screen.get_node("ScoreLabel").text = "Счёт: " + str(GameManager.score)
-    var roll = CollectionManager.roll_drop()
-    if roll:
-        CollectionManager.add(roll.item, roll.variant)
-        win_screen.show_drop(roll.item, roll.variant)
+    var reward = CollectionManager.roll_win_reward()
+    if reward.type == "item":
+        win_screen.show_drop(reward.item, reward.variant, not reward.dup)
+    elif reward.type == "key":
+        win_screen.show_key()
+        ThemeManager.set_chapter(CollectionManager.house_tier)
     else:
-        win_screen.show_no_drop()
-    CollectionManager.persist()
+        win_screen.show_coins(reward.amount)
     album_bar.refresh()
     win_screen.visible = true
 
